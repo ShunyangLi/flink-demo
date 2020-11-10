@@ -68,6 +68,16 @@ class Index extends Component {
       });
   };
 
+  // generate a random color, used for the label
+  generateColor = () => {
+    return (
+      "#" +
+      Math.random()
+        .toString(16)
+        .substr(-6)
+    );
+  };
+
   render() {
     return (
       <div className="content">

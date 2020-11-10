@@ -7,7 +7,6 @@ import server from "@/assets/images/fuwuqi.png";
 import Server from "../Server";
 import db_data from "./data";
 import Graphin, { Utils } from "@antv/graphin";
-import { LayoutOutlined } from "@ant-design/icons";
 import { Toolbar, Legend } from "@antv/graphin-components";
 // import the graph style icon
 import {
@@ -23,6 +22,7 @@ import {
 import "@antv/graphin-components/dist/index.css";
 import "@antv/graphin/dist/index.css"; // 引入Graphin CSS
 import "./graph.scss";
+// import data from "../../ServerInfo/data";
 
 const { TabPane } = Tabs;
 const iconMap = {
@@ -64,7 +64,6 @@ const { nodes, edges } = Utils.mock(6)
   .graphin();
 nodes.forEach((node, index) => {
   const isCompany = index % 3 === 0;
-
   node.style = {
     ...node.style,
     fontFamily: "graphin",
@@ -131,15 +130,15 @@ class D3Graph extends Component {
 
     // tool bar
     const renderToolbar = (renderProps, _state) => {
-      const { toolbarCfg, apis } = renderProps;
+      const { toolbarCfg } = renderProps;
       const tooltip = {
         fullscreen: "fullscreen",
         zoomOut: "zoomOut",
         zoomIn: "zoomIn"
       };
 
+      // to filter the necessary toolbars
       let customToolbarCfg = toolbarCfg.filter(item => {
-        console.log(item);
         return (
           item.id === "fullscreen" ||
           item.id === "zoomOut" ||
