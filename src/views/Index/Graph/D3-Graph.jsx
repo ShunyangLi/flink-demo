@@ -124,9 +124,24 @@ class D3Graph extends Component {
 
   render() {
     let { data } = this.props;
+    // const {nodes, edges, legendOptions} = data;
+    console.log(data);
     if (data.nodes.length === 0) {
       data = this.state.data;
     }
+
+    const legendOptions = [
+      {
+        label: "Company",
+        value: "company",
+        color: "#873bf4"
+      },
+      {
+        label: "Person",
+        value: "person",
+        color: "#f79e26"
+      }
+    ];
 
     // tool bar
     const renderToolbar = (renderProps, _state) => {
@@ -154,19 +169,6 @@ class D3Graph extends Component {
       });
       return [...customToolbarCfg];
     };
-
-    const legendOptions = [
-      {
-        label: "Company",
-        value: "company",
-        color: "#873bf4"
-      },
-      {
-        label: "Person",
-        value: "person",
-        color: "#f79e26"
-      }
-    ];
 
     const handleLegend = (checked, options, LegendProps) => {
       const { apis } = LegendProps;

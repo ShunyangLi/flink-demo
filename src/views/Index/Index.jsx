@@ -28,9 +28,10 @@ class Index extends Component {
       loadingGraph: false,
       data: {
         nodes: [],
-        links: [],
-        isFull: false
-      }
+        edges: [],
+        legendOptions: []
+      },
+      colors: []
     };
   }
 
@@ -48,23 +49,93 @@ class Index extends Component {
     });
 
     axios
-      .post(`${API}/patmat-api/parse-cypher`, {
+      .post(`${API}`, {
         cypher: this.state.code
       })
       .then(res => {
-        console.log(res.data);
-        let { data } = this.state;
-        data.nodes = res.data.nodes;
-        data.links = res.data.links;
+        // query consist with labels and edges
+        const query = res.data.data.query;
+        // get the labels and edges data
+        const { labels, edges } = query;
+        let colors = this.state.colors;
 
+        let legends = [];
+        labels.forEach(label => {
+          label = label.replaceAll(" ", "-");
+
+          let color = this.generateColor();
+          while (colors.indexOf(color) !== -1) {
+            color = this.generateColor();
+          }
+          // add color to state value
+          colors.push(color);
+          legends.push({
+            label: label,
+            value: label,
+            color: color
+          });
+        });
+
+        let nodes = [];
+        let data_edges = [];
+
+        // collect the nodes and edges info
+        edges.forEach(edge => {
+          const source = edge[0];
+          const target = edge[1];
+          const label = edge[2].replaceAll(" ", "-");
+
+          if (nodes.indexOf(source) === -1) nodes.push(source);
+          if (nodes.indexOf(target) === -1) nodes.push(target);
+
+          data_edges.push({
+            data: {
+              label: label,
+              properties: [],
+              source: source,
+              target: target
+            },
+            label: label,
+            source: source,
+            target: target
+          });
+        });
+
+        let data_nodes = [];
+        nodes.forEach(node => {
+          data_nodes.push({
+            comboId: undefined,
+            data: {
+              id: node,
+              label: node,
+              properties: [],
+              type: labels[node].replaceAll(" ", "-")
+            },
+            id: node,
+            label: node,
+            shape: "CircleNode",
+            style: {
+              fontFamily: "graphin",
+              icon: "",
+              nodeSize: 24,
+              primaryColor: colors[node]
+            }
+          });
+        });
+
+        console.log(data_nodes, data_edges, legends);
         this.setState({
-          data: data,
+          data: {
+            nodes: data_nodes,
+            edges: data_edges,
+            legendOptions: legends
+          },
           loadingGraph: !this.state.loadingGraph
         });
       })
       .catch(err => {
         // console.log(err.response);
-        message.error(err.response.message);
+        message.error("Something error");
       });
   };
 

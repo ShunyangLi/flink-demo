@@ -43,7 +43,7 @@ export default class CodeEditer extends Component {
     editor.on("keyup", this.set_change.bind(this));
     // editor.on('paste', this.set_change.bind(this));
     // editor.on('change', this.set_change.bind(this));
-    // editor.on('keydown', this.set_change.bind(this));
+    editor.on("keydown", this.set_change.bind(this));
   }
 
   set_change = () => {
