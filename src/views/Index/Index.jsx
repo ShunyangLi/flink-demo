@@ -23,7 +23,7 @@ class Index extends Component {
           name: "users"
         }
       ],
-      code: "MATCH (a)-[b]-(c) RETURN a;",
+      code: "MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN count(*);",
       visible: false,
       loadingGraph: false,
       data: {
@@ -70,8 +70,8 @@ class Index extends Component {
           // add color to state value
           colors.push(color);
           legends.push({
-            label: label,
-            value: label,
+            label: label.toString(),
+            value: label.toString(),
             color: color
           });
         });
@@ -81,9 +81,9 @@ class Index extends Component {
 
         // collect the nodes and edges info
         edges.forEach(edge => {
-          const source = edge[0];
-          const target = edge[1];
-          const label = edge[2].replaceAll(" ", "-");
+          const source = edge[0].toString();
+          const target = edge[1].toString();
+          const label = edge[2].toString();
 
           if (nodes.indexOf(source) === -1) nodes.push(source);
           if (nodes.indexOf(target) === -1) nodes.push(target);
@@ -103,13 +103,14 @@ class Index extends Component {
 
         let data_nodes = [];
         nodes.forEach(node => {
+          node = node.toString();
           data_nodes.push({
             comboId: undefined,
             data: {
               id: node,
               label: node,
               properties: [],
-              type: labels[node].replaceAll(" ", "-")
+              type: labels[node]
             },
             id: node,
             label: node,
@@ -123,7 +124,7 @@ class Index extends Component {
           });
         });
 
-        console.log(data_nodes, data_edges, legends);
+        // console.log(data_nodes, data_edges, legends);
         this.setState({
           data: {
             nodes: data_nodes,
@@ -141,12 +142,7 @@ class Index extends Component {
 
   // generate a random color, used for the label
   generateColor = () => {
-    return (
-      "#" +
-      Math.random()
-        .toString(16)
-        .substr(-6)
-    );
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
   };
 
   render() {
