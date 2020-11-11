@@ -99,6 +99,18 @@ class Index extends Component {
             source: source,
             target: target
           });
+
+          data_edges.push({
+            data: {
+              label: "Test",
+              properties: [],
+              source: source,
+              target: target
+            },
+            label: "Test",
+            source: source,
+            target: target
+          });
         });
 
         let data_nodes = [];
