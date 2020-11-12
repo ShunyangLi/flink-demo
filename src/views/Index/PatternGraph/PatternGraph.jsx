@@ -23,7 +23,6 @@ import {
 import "@antv/graphin-components/dist/index.css";
 import "@antv/graphin/dist/index.css"; // 引入Graphin CSS
 import "./graph.scss";
-import db_data from "../Graph/data";
 // import data from "../../ServerInfo/data";
 
 const { TabPane } = Tabs;
@@ -91,33 +90,9 @@ class PatternGraph extends Component {
             return minDegree < 3 ? nodeSize * 5 : minDegree * nodeSize * 2;
           }
         }
-      },
-      columns: [
-        {
-          title: "id",
-          dataIndex: "id",
-          key: "id",
-          align: "center"
-        },
-        {
-          title: "content",
-          dataIndex: "content",
-          key: "content",
-          align: "center"
-        }
-      ]
+      }
     };
   }
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //     if (nextProps.data.data !== undefined) {
-  //         return {
-  //             props_data: nextProps.data.data,
-  //             end: nextProps.data.data.results.length
-  //         };
-  //     }
-  //     return null;
-  // }
 
   render() {
     let { data } = this.props;
@@ -173,13 +148,13 @@ class PatternGraph extends Component {
       <div>
         <PageHeader
           ghost={false}
-          title="Graph Data"
+          title={this.props.title}
           key={1}
           extra={[
             <Button
               className={"buttons"}
               key={1}
-              disabled={this.props.curr < 0}
+              // disabled={this.props.curr < 0}
               onClick={this.props.prev_pattern.bind(this)}
             >
               <LeftOutlined />
@@ -189,7 +164,7 @@ class PatternGraph extends Component {
             <Button
               className={"buttons"}
               key={2}
-              disabled={this.props.curr >= this.props.end}
+              // disabled={this.props.curr >= this.props.end}
               onClick={this.props.next_pattern.bind(this)}
             >
               <RightOutlined />
@@ -257,7 +232,7 @@ class PatternGraph extends Component {
               }
               key="2"
             >
-              Code part
+              {this.props.text_res}
             </TabPane>
 
             <TabPane
@@ -275,8 +250,8 @@ class PatternGraph extends Component {
               <Table
                 bordered
                 components={this.components}
-                columns={this.state.columns}
-                dataSource={db_data}
+                columns={this.props.table.columns}
+                dataSource={this.props.table.dataSource}
                 style={{ marginRight: "10px" }}
               />
             </TabPane>
@@ -293,7 +268,7 @@ class PatternGraph extends Component {
               }
               key="4"
             >
-              <Server />
+              <Server cost={this.props.cost} total={this.props.total} />
             </TabPane>
           </Tabs>
         </div>

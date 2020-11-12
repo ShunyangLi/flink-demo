@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "antd";
 
-const data = [
+let data = [
   {
     server: "unsw",
     cost: "20s",
@@ -37,6 +37,8 @@ class Server extends Component {
   }
 
   render() {
+    data[0].cost = this.props.cost;
+    data[0].result = this.props.total;
     return (
       <div>
         <Table

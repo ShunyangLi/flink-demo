@@ -36,7 +36,7 @@ export const codeMirrorSettings = {
   // CALL some.procedureName() YIELD param1, param2 as somethingElse
   // MATCH (variable {propKey: 1})
   // SET variable.propKey = 1;`,
-  value: `MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN count(*);`,
+  value: `MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN *;`,
 
   mode: "application/x-cypher-query",
   indentWithTabs: true,

@@ -24,7 +24,7 @@ class Index extends Component {
           name: "users"
         }
       ],
-      code: "MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN count(*);",
+      code: "MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN *;",
       visible: false,
       loadingGraph: false,
       data: {
@@ -38,8 +38,14 @@ class Index extends Component {
       },
       colors: [],
       type: "pattern",
-      curr: -1,
-      end: 0
+      title: "Graph data",
+      // add a table information
+      table: {
+        columns: [],
+        dataSource: []
+      },
+      cost: "",
+      total: 0
     };
   }
 
@@ -65,15 +71,16 @@ class Index extends Component {
         }
       })
       .then(res => {
-        console.log(res);
-
+        console.log(res.data);
         this.setState({
           props_data: res.data,
-          end: res.data.results.length,
-          loadingGraph: !this.state.loadingGraph
+          total: res.data.results.length,
+          loadingGraph: !this.state.loadingGraph,
+          cost: res.data.runTime + "s"
         });
 
         this.extract_data(res.data);
+        this.extract_table(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -136,10 +143,10 @@ class Index extends Component {
     // const result = data.results[next_index];
     let nodes = [];
     let data_edges = [];
+    let results = data.results;
 
-    data.results.forEach(result => {
+    results.forEach(result => {
       edges.forEach(edge => {
-        console.log(edge);
         const source = result[edge.src].toString();
         const target = result[edge.dest].toString();
         const label = edge.label.toString();
@@ -201,53 +208,6 @@ class Index extends Component {
         }
       });
     });
-    console.log("here");
-    // // result is like [0, 1, 2]
-    // result.forEach(index  => {
-    //   // get edge
-    //   let edge = edges[index];
-    //   // get info
-    //   const source = edge[0].toString();
-    //   const target = edge[1].toString();
-    //   const label = edge[2].toString();
-    //
-    //   let temp_nodes = [source, target];
-    //   temp_nodes.forEach(index => {
-    //     if (nodes.filter(node => node.label === labels[index]).length === 0) {
-    //       nodes.push({
-    //         comboId: undefined,
-    //         data: {
-    //           id: labels[index].toString().replaceAll(" ", "-"),
-    //           label: labels[index],
-    //           properties: [],
-    //           type: labels[index]
-    //         },
-    //         id: labels[index].toString(),
-    //         label: labels[index],
-    //         shape: "CircleNode",
-    //         style: {
-    //           fontFamily: "graphin",
-    //           icon: "",
-    //           nodeSize: 24,
-    //           primaryColor: colors[labels[index]]
-    //         }
-    //       });
-    //     }
-    //   });
-    //
-    //   data_edges.push({
-    //     data: {
-    //       label: label,
-    //       properties: [],
-    //       source: labels[source],
-    //       target: labels[target]
-    //     },
-    //     label: label,
-    //     source: labels[source],
-    //     target: labels[target]
-    //   });
-    // });
-
     // console.log(nodes, data_edges);
     this.setState({
       data: {
@@ -258,23 +218,123 @@ class Index extends Component {
     });
   };
 
-  next_pattern = () => {
-    console.log(this.state.curr <= this.state.end - 1);
-    let curr = this.state.curr + 1;
-    if (curr >= this.state.end) curr = this.state.end - 1;
-    this.setState({
-      curr: curr
+  extract_pattern = data => {
+    // console.log("index", next_index);
+    const query = data.query;
+    // get the labels and edges data
+    const { labels, edges } = query;
+    let colors = this.state.colors;
+    // const result = data.results[next_index];
+    let nodes = [];
+    let data_edges = [];
+
+    edges.forEach(edge => {
+      const source = labels[edge.src].toString();
+      const target = labels[edge.dest].toString();
+      const label = edge.label.toString();
+
+      // add the nodes
+      let temp_nodes = [source, target];
+      temp_nodes.forEach(node_id => {
+        if (nodes.filter(node => node.id === node_id).length === 0) {
+          nodes.push({
+            comboId: undefined,
+            data: {
+              id: node_id,
+              label: node_id,
+              properties: [],
+              type: node_id
+            },
+            id: node_id,
+            label: node_id,
+            shape: "CircleNode",
+            style: {
+              fontFamily: "graphin",
+              icon: "",
+              nodeSize: 24,
+              primaryColor: colors[node_id]
+            }
+          });
+        }
+      });
+
+      data_edges.push({
+        data: {
+          label: label,
+          properties: [],
+          source: source,
+          target: target
+        },
+        label: label,
+        source: source,
+        target: target
+      });
     });
-    this.extract_node_edges(this.state.props_data, curr);
+    // console.log(nodes, data_edges);
+    this.setState({
+      data: {
+        nodes: nodes,
+        edges: data_edges,
+        legendOptions: this.state.data.legendOptions
+      }
+    });
+  };
+
+  extract_table = data => {
+    const query = data.query;
+    // get the labels and edges data
+    const { labels } = query;
+    const results = data.results;
+
+    let cols = [];
+    let col_data = [];
+
+    labels.forEach(label => {
+      if (
+        cols.filter(c => {
+          return c.key === label;
+        }).length === 0
+      ) {
+        cols.push({
+          title: label,
+          dataIndex: label,
+          key: label,
+          align: "center"
+        });
+      }
+    });
+
+    results.forEach(res => {
+      let tmp = {};
+      res.forEach(function(item, index) {
+        tmp[labels[index]] = item;
+      });
+      col_data.push(tmp);
+    });
+
+    this.setState({
+      table: {
+        columns: cols,
+        dataSource: col_data
+      }
+    });
+  };
+  next_pattern = () => {
+    // display pattern
+    this.setState({
+      title: "Graph pattern"
+    });
+
+    this.extract_pattern(this.state.props_data);
   };
 
   prev_pattern = () => {
-    let curr = this.state.curr - 1;
-    if (curr <= 0) curr = 0;
+    // display result
     this.setState({
-      curr: curr
+      title: "Graph data"
     });
-    this.extract_node_edges(this.state.props_data, curr);
+
+    this.extract_node_edges(this.state.props_data);
   };
 
   render() {
@@ -305,8 +365,11 @@ class Index extends Component {
                   data={this.state.data}
                   next_pattern={this.next_pattern.bind(this)}
                   prev_pattern={this.prev_pattern.bind(this)}
-                  curr={this.state.cur}
-                  end={this.state.end}
+                  title={this.state.title}
+                  text_res={JSON.stringify(this.state.props_data)}
+                  table={this.state.table}
+                  cost={this.state.cost}
+                  total={this.state.total}
                 />
               )}
 
