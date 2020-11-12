@@ -68,3 +68,39 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+# Cypher
+
+```cypher
+MATCH(p1:Person)-[r1:Knows]->(p2:Person)-[r2:PersonIsLocatedIn]-> (ct1:City),
+(p1:Person)-[:WorkAt]->(cp1:Company)-[:OrganisationIsLocatedIn]-> (co:Country),
+(p1:Person)-[:StudyAt]->(u1:University)-[:OrganisationIsLocatedIn]-> (ct2:City)
+RETURN *
+```
+
+```cypher
+MATCH(p1:Person)-[:Knows]->(p2:Person) RETURN *
+```
+
+```cypher
+MATCH (p1:Person)-[:Knows]->(p2:Person)<-[:CommentHasCreator]-(c1:Comment)<- [:ReplyOfComment]-(c2:Comment)-[:CommentHasCreator]->(p1)
+RETURN *
+```
+
+```cypher
+MATCH (p1:Person)-[:Knows]->(p2:Person)-[:Knows]->(p3:Person)<- [:PostHasCreator]-(pt1:Post)-[:PostHasTag]->(t:Tag)<-[:PostHasTag]- (pt2:Post)-[:PostHasCreator]->(p1:Person)
+RETURN *
+```
+
+```cypher
+MATCH (p1:Person)-[:Knows]->(p2:Person)-[:LikesPost]->(m:Post)- [:PostHasCreator]->(p1:Person)
+RETURN *
+```
+
+```cypher
+MATCH (p1:Person)<-[:PostHasCreator]-(m:Post)<-[:ReplyOfPost]-(c:Comment)- [:CommentHasCreator]->(p2:Person)
+RETURN *
+```
+
