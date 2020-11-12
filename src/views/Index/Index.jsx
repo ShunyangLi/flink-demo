@@ -62,11 +62,13 @@ class Index extends Component {
       loadingGraph: !this.state.loadingGraph
     });
 
+    console.log(this.state.code.replaceAll("\n", " "));
+
     axios
       .get(`${API}/query`, {
         params: {
           queryJson: {
-            query: this.state.code
+            query: this.state.code.replaceAll("\n", " ")
           }
         }
       })
@@ -76,7 +78,7 @@ class Index extends Component {
           props_data: res.data,
           total: res.data.results.length,
           loadingGraph: !this.state.loadingGraph,
-          cost: res.data.runTime + "s"
+          cost: res.data.runTime + "ms"
         });
 
         this.extract_data(res.data);
@@ -228,48 +230,79 @@ class Index extends Component {
     let nodes = [];
     let data_edges = [];
 
+    console.log(labels);
+
     edges.forEach(edge => {
-      const source = labels[edge.src].toString();
-      const target = labels[edge.dest].toString();
+      let source = labels[edge.src].toString();
+      let target = labels[edge.dest].toString();
       const label = edge.label.toString();
 
-      // add the nodes
-      let temp_nodes = [source, target];
-      temp_nodes.forEach(node_id => {
-        if (nodes.filter(node => node.id === node_id).length === 0) {
-          nodes.push({
-            comboId: undefined,
-            data: {
-              id: node_id,
-              label: node_id,
-              properties: [],
-              type: node_id
-            },
-            id: node_id,
-            label: node_id,
-            shape: "CircleNode",
-            style: {
-              fontFamily: "graphin",
-              icon: "",
-              nodeSize: 24,
-              primaryColor: colors[node_id]
-            }
-          });
-        }
-      });
+      if (
+        nodes.filter(node => {
+          return node.id === edge.src.toString();
+        }).length === 0
+      ) {
+        nodes.push({
+          comboId: undefined,
+          data: {
+            id: edge.src.toString(),
+            label: source,
+            properties: [],
+            type: source
+          },
+          id: edge.src.toString(),
+          label: source,
+          shape: "CircleNode",
+          style: {
+            fontFamily: "graphin",
+            icon: "",
+            nodeSize: 24,
+            primaryColor: colors[source]
+          }
+        });
+      }
+
+      if (
+        nodes.filter(node => {
+          return node.id === edge.dest.toString();
+        }).length === 0
+      ) {
+        nodes.push({
+          comboId: undefined,
+          data: {
+            id: edge.dest.toString(),
+            label: target,
+            properties: [],
+            type: target
+          },
+          id: edge.dest.toString(),
+          label: target,
+          shape: "CircleNode",
+          style: {
+            fontFamily: "graphin",
+            icon: "",
+            nodeSize: 24,
+            primaryColor: colors[target]
+          }
+        });
+      }
+
+      console.log(source);
 
       data_edges.push({
         data: {
           label: label,
           properties: [],
-          source: source,
-          target: target
+          source: edge.src.toString(),
+          target: edge.dest.toString()
         },
         label: label,
-        source: source,
-        target: target
+        source: edge.src.toString(),
+        target: edge.dest.toString()
       });
     });
+
+    console.log(data_edges);
     // console.log(nodes, data_edges);
     this.setState({
       data: {
