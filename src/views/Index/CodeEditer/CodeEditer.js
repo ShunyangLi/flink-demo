@@ -18,7 +18,7 @@ export default class CodeEditer extends Component {
       input: null,
       editorSupport: null,
       editor: null,
-      code: ""
+      code: undefined
     };
   }
 
@@ -44,11 +44,13 @@ export default class CodeEditer extends Component {
     // editor.on('paste', this.set_change.bind(this));
     // editor.on('change', this.set_change.bind(this));
     editor.on("keydown", this.set_change.bind(this));
+    // editor.on('change', this.set_change(editor.getValue()));
   }
 
-  set_change = () => {
+  set_change = value => {
+    this.props.set_code(this.state.editor.getValue());
     // console.log(this.input.innerText.match(/MATCH.*/g).join(' '));
-    this.props.set_code(this.input.innerText.match(/MATCH.*/g).join(" "));
+    // this.props.set_code(this.input.innerText.match(/MATCH.*/g).join(" "));
   };
 
   render() {

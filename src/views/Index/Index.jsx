@@ -62,8 +62,6 @@ class Index extends Component {
       loadingGraph: !this.state.loadingGraph
     });
 
-    console.log(this.state.code.replaceAll("\n", " "));
-
     axios
       .get(`${API}/query`, {
         params: {
