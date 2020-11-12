@@ -81,26 +81,38 @@ RETURN *
 ```
 
 ```cypher
-MATCH(p1:Person)-[:Knows]->(p2:Person) RETURN *
+MATCH(p1:Person)-[:Knows]->(p2:Person) RETURN *;
 ```
 
 ```cypher
 MATCH (p1:Person)-[:Knows]->(p2:Person)<-[:CommentHasCreator]-(c1:Comment)<- [:ReplyOfComment]-(c2:Comment)-[:CommentHasCreator]->(p1)
-RETURN *
-```
-
-```cypher
-MATCH (p1:Person)-[:Knows]->(p2:Person)-[:Knows]->(p3:Person)<- [:PostHasCreator]-(pt1:Post)-[:PostHasTag]->(t:Tag)<-[:PostHasTag]- (pt2:Post)-[:PostHasCreator]->(p1:Person)
-RETURN *
+RETURN *;
 ```
 
 ```cypher
 MATCH (p1:Person)-[:Knows]->(p2:Person)-[:LikesPost]->(m:Post)- [:PostHasCreator]->(p1:Person)
-RETURN *
+RETURN *;
 ```
 
 ```cypher
 MATCH (p1:Person)<-[:PostHasCreator]-(m:Post)<-[:ReplyOfPost]-(c:Comment)- [:CommentHasCreator]->(p2:Person)
-RETURN *
+RETURN *;
 ```
 
+```cypher
+MATCH (p1:Person)-[:Knows]->(p2:Person)-[:LikesPost]->(m:Post)- [:PostHasCreator]->(p1:Person)
+RETURN *;
+```
+
+```cypher
+MATCH (p1:Person)<-[:PostHasCreator]-(m:Post)<-[:ReplyOfPost]-(c:Comment)- [:CommentHasCreator]->(p2:Person)
+RETURN *;
+```
+
+```cypher
+MATCH(p1:Person)-[:Knows]->(p2:Person)<-[:PostHasCreator]-(m:Post) 2 RETURN *;
+```
+
+```cypher
+MATCH (p1:Person)-[:Knows]->(p2:Person)-[w:WorkAt]->(o:Company)- [:OrganisationIsLocatedIn]->(c:Country) RETURN *;
+```
