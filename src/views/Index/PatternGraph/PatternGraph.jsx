@@ -232,7 +232,9 @@ class PatternGraph extends Component {
               }
               key="2"
             >
-              {this.props.text_res}
+              <div>
+                <pre>{this.props.text_res}</pre>
+              </div>
             </TabPane>
 
             <TabPane

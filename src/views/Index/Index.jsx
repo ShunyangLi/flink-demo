@@ -397,7 +397,7 @@ class Index extends Component {
                   next_pattern={this.next_pattern.bind(this)}
                   prev_pattern={this.prev_pattern.bind(this)}
                   title={this.state.title}
-                  text_res={JSON.stringify(this.state.props_data)}
+                  text_res={JSON.stringify(this.state.props_data, null, 2)}
                   table={this.state.table}
                   cost={this.state.cost}
                   total={this.state.total}
