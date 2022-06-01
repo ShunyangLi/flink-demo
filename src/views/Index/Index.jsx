@@ -155,34 +155,34 @@ class Index extends Component {
         let temp_nodes = [source, target];
         temp_nodes.forEach(node_id => {
           if (nodes.filter(node => node.id === node_id).length === 0) {
+            let tl =
+              labels[
+                result.findIndex(r => {
+                  return r.toString() === node_id;
+                })
+              ];
+            let ic = "";
+            if (["Person", "user"].indexOf(tl.toString()) >= 0) {
+              ic = "switch user";
+            } else if (["Company", "money"].indexOf(tl.toString()) >= 0) {
+              ic = "bank-fill";
+            }
             nodes.push({
               comboId: undefined,
               data: {
                 id: node_id,
                 label: node_id,
                 properties: [],
-                type:
-                  labels[
-                    result.findIndex(r => {
-                      return r.toString() === node_id;
-                    })
-                  ]
+                type: tl
               },
               id: node_id,
               label: node_id,
               shape: "CircleNode",
               style: {
                 fontFamily: "graphin",
-                icon: "",
+                icon: ic,
                 nodeSize: 24,
-                primaryColor:
-                  colors[
-                    labels[
-                      result.findIndex(r => {
-                        return r.toString() === node_id;
-                      })
-                    ]
-                  ]
+                primaryColor: colors[tl]
               }
             });
           }
