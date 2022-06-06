@@ -3,12 +3,31 @@ import "@/style/view-style/index.scss";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
 import D3Graph from "./Graph";
 import PatternGraph from "./PatternGraph";
-import { Button, Form, Icon, message } from "antd";
-import CodeEditer from "./CodeEditer/CodeEditer";
+import { Button, Form, Icon, message, Radio, Tag } from "antd";
+// import CodeEditer from "./CodeEditer/CodeEditer";
 import icons from "../../components/SVGFile/icons";
 import axios from "@/api";
 import { API } from "@/api/config";
 import "./index.scss";
+const { CheckableTag } = Tag;
+
+class MyTag extends React.Component {
+  state = { checked: true };
+
+  handleChange = checked => {
+    this.setState({ checked });
+  };
+
+  render() {
+    return (
+      <CheckableTag
+        {...this.props}
+        checked={this.state.checked}
+        onChange={this.handleChange}
+      />
+    );
+  }
+}
 
 class Index extends Component {
   constructor(props) {
@@ -380,7 +399,29 @@ class Index extends Component {
           {/* the graph part */}
           <div className={"graph"}>
             <div>
-              <CodeEditer code={this.state.code} set_code={this.set_code} />
+              {/* <CodeEditer code={this.state.code} set_code={this.set_code} /> */}
+              <div className="rs">
+                <Radio.Group value={1}>
+                  <Radio value={1} checked={true}>
+                    <label className="drinkcard-cc p1" htmlFor="visa2" />
+                  </Radio>
+
+                  <Radio value={2}>
+                    <label className="drinkcard-cc p2" htmlFor="mastercard2" />
+                  </Radio>
+
+                  <Radio value={2}>
+                    <label className="drinkcard-cc p3" htmlFor="mastercard2" />
+                  </Radio>
+                </Radio.Group>
+              </div>
+              <div>
+                <label className="tags">Labels: </label>
+                <MyTag className="tags">Bank</MyTag>
+                <MyTag className="tags">Merchant</MyTag>
+                <MyTag className="tags">Person</MyTag>
+                <MyTag className="tags">Agent</MyTag>
+              </div>
               <Button className={"graphButtons"} onClick={this.set_graph}>
                 <Icon component={icons["run"]} />
               </Button>
