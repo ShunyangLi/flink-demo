@@ -1,34 +1,34 @@
 const menu = [
   {
     key: "/index",
-    title: "Query",
+    title: "查询",
     icon: "query"
   },
   {
     key: "/import",
-    title: "Import",
+    title: "导入",
     icon: "importd"
   },
   {
     key: "/config",
-    title: "Config",
+    title: "配置",
     icon: "config"
   },
   {
     key: "/server",
-    title: "Server",
+    title: "服务器",
     icon: "server"
   },
   {
     key: "/database",
-    title: "Database",
+    title: "数据库",
     icon: "db"
-  },
-  {
-    key: "/about",
-    title: "About",
-    icon: "about"
   }
+  // {
+  //   key: "/about",
+  //   title: "About",
+  //   icon: "about"
+  // }
 ];
 
 export default menu;

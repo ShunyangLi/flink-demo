@@ -39,17 +39,16 @@ const iconMap = {
 const SelectOption = Select.Option;
 const LayoutSelector = props => {
   const { apis, value, onChange } = props;
-  // 包裹在graphin内部的组件，将获得graphin提供的额外props
   const { layouts } = apis.getInfo();
   return (
     <div style={{ position: "absolute", top: 10, left: 10 }}>
       <Select style={{ width: "120px" }} value={value} onChange={onChange}>
         {layouts.map(item => {
-          const { name, disabled } = item;
+          const { name, disabled, desc } = item;
           const iconComponent = iconMap[name] || <CustomerServiceOutlined />;
           return (
             <SelectOption key={name} value={name} disabled={disabled}>
-              {iconComponent} &nbsp;{name}
+              {iconComponent} &nbsp;{desc}
             </SelectOption>
           );
         })}
@@ -72,8 +71,6 @@ nodes.forEach((node, index) => {
   };
   node.data.type = isCompany ? "company" : "person";
 });
-
-console.log(nodes, edges);
 
 class D3Graph extends Component {
   constructor(props) {
@@ -144,45 +141,33 @@ class D3Graph extends Component {
       data = this.state.data;
     }
 
-    // const legendOptions = [
-    //   {
-    //     label: "Company",
-    //     value: "company",
-    //     color: "#873bf4"
-    //   },
-    //   {
-    //     label: "Person",
-    //     value: "person",
-    //     color: "#f79e26"
-    //   }
-    // ];
-
     // tool bar
-    const renderToolbar = (renderProps, _state) => {
-      const { toolbarCfg } = renderProps;
-      const tooltip = {
-        fullscreen: "fullscreen",
-        zoomOut: "zoomOut",
-        zoomIn: "zoomIn"
-      };
-
-      // to filter the necessary toolbars
-      let customToolbarCfg = toolbarCfg.filter(item => {
-        return (
-          item.id === "fullscreen" ||
-          item.id === "zoomOut" ||
-          item.id === "zoomIn"
-        );
-      });
-
-      customToolbarCfg = customToolbarCfg.map(item => {
-        return {
-          ...item,
-          name: tooltip[item.id]
-        };
-      });
-      return [...customToolbarCfg];
-    };
+    // const renderToolbar = (renderProps, _state) => {
+    //   const { toolbarCfg } = renderProps;
+    //   const tooltip = {
+    //     fullscreen: "fullscreen",
+    //     zoomOut: "zoomOut",
+    //     zoomIn: "zoomIn"
+    //   };
+    //
+    //   // to filter the necessary toolbars
+    //   let customToolbarCfg = toolbarCfg.filter(item => {
+    //     return (
+    //       item.id === "fullscreen" ||
+    //       item.id === "zoomOut" ||
+    //       item.id === "zoomIn"
+    //     );
+    //   });
+    //
+    //   customToolbarCfg = customToolbarCfg.map(item => {
+    //     console.log(item);
+    //     return {
+    //       ...item,
+    //       name: tooltip[item.id]
+    //     };
+    //   });
+    //   return [...customToolbarCfg];
+    // };
 
     const handleLegend = (checked, options, LegendProps) => {
       const { apis } = LegendProps;
@@ -221,8 +206,6 @@ class D3Graph extends Component {
               }
               key="1"
             >
-              {/* thi part is graph */}
-              {/* TODO here to fix */}
               {!this.props.loadingGraph && (
                 <Graphin
                   data={{ nodes, edges }}
@@ -244,7 +227,10 @@ class D3Graph extends Component {
                     }}
                   />
                   <Legend options={legendOptions} onChange={handleLegend} />
-                  <Toolbar direction="vertical" render={renderToolbar} />
+                  {/*<Toolbar direction="vertical" render={renderToolbar} />*/}
+                  <Toolbar
+                    style={{ position: "absolute", bottom: 28, left: 28 }}
+                  />
                 </Graphin>
               )}
               {this.props.loadingGraph && (

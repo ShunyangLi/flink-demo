@@ -1,59 +1,22 @@
 import React, { Component } from "react";
 import "@/style/view-style/index.scss";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
-import D3Graph from "./Graph";
-import PatternGraph from "./PatternGraph";
-import { Button, Form, Icon, message, Radio, Tag } from "antd";
-// import CodeEditer from "./CodeEditer/CodeEditer";
-import icons from "../../components/SVGFile/icons";
+import TableView from "./TableView";
+import { Button, Form, message, Radio, Row, Col } from "antd";
 import axios from "@/api";
 import { API } from "@/api/config";
 import "./index.scss";
-const { CheckableTag } = Tag;
-
-class MyTag extends React.Component {
-  state = { checked: true };
-
-  handleChange = checked => {
-    this.setState({ checked });
-  };
-
-  render() {
-    return (
-      <CheckableTag
-        {...this.props}
-        checked={this.state.checked}
-        onChange={this.handleChange}
-      />
-    );
-  }
-}
 
 class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      names: [
-        {
-          id: 1,
-          name: "student"
-        },
-        {
-          id: 2,
-          name: "users"
-        }
-      ],
-      code: "MATCH (p1:Person)-[:Knows]->(p2:Person) RETURN *;",
       visible: false,
       loadingGraph: false,
       data: {
         nodes: [],
         edges: [],
         legendOptions: []
-      },
-      props_data: {
-        query: {},
-        results: {}
       },
       colors: [],
       type: "pattern",
@@ -64,7 +27,8 @@ class Index extends Component {
         dataSource: []
       },
       cost: "",
-      total: 0
+      total: 0,
+      pattern: 1
     };
   }
 
@@ -103,14 +67,9 @@ class Index extends Component {
       })
       .catch(err => {
         console.log(err);
-        message.error("Something error");
+        message.error("网络错误");
       });
   };
-
-  // generate a random color, used for the label
-  // generateColor = () => {
-  //   return "#" + Math.floor(Math.random() * 16777215).toString(16);
-  // };
 
   // to extract the nodes and edges from data
   extract_data = data => {
@@ -319,7 +278,7 @@ class Index extends Component {
       });
     });
 
-    console.log(data_edges);
+    // console.log(data_edges);
     // console.log(nodes, data_edges);
     this.setState({
       data: {
@@ -369,29 +328,20 @@ class Index extends Component {
       }
     });
   };
-  next_pattern = () => {
-    // display pattern
-    this.setState({
-      title: "Graph pattern"
-    });
 
-    this.extract_pattern(this.state.props_data);
+  change_pattern = e => {
+    this.setState({
+      pattern: e.target.value
+    });
   };
 
-  prev_pattern = () => {
-    // display result
-    this.setState({
-      title: "Graph data"
-    });
-
-    this.extract_node_edges(this.state.props_data);
-  };
+  show_all = () => {};
 
   render() {
     return (
       <div className="content">
         <div>
-          <CustomBreadcrumb arr={["database"]} />
+          <CustomBreadcrumb arr={["数据库"]} />
         </div>
 
         {/* tag and graph part */}
@@ -401,57 +351,43 @@ class Index extends Component {
             <div>
               {/* <CodeEditer code={this.state.code} set_code={this.set_code} /> */}
               <div className="rs">
-                <Radio.Group value={1}>
-                  <Radio value={1} checked={true}>
-                    <label className="drinkcard-cc p1" htmlFor="visa2" />
+                <Radio.Group
+                  value={this.state.pattern}
+                  onChange={this.change_pattern}
+                >
+                  <Radio value={1} className={"pps"}>
+                    <label className="drinkcard-cc p1" htmlFor="p1" />
                   </Radio>
 
-                  <Radio value={2}>
-                    <label className="drinkcard-cc p2" htmlFor="mastercard2" />
+                  <Radio value={2} className={"pps"}>
+                    <label className="drinkcard-cc p2" htmlFor="p1" />
                   </Radio>
 
-                  <Radio value={2}>
-                    <label className="drinkcard-cc p3" htmlFor="mastercard2" />
+                  <Radio value={3} className={"pps"}>
+                    <label className="drinkcard-cc p3" htmlFor="p1" />
                   </Radio>
                 </Radio.Group>
               </div>
-              <div>
-                <label className="tags">Labels: </label>
-                <MyTag className="tags">Bank</MyTag>
-                <MyTag className="tags">Merchant</MyTag>
-                <MyTag className="tags">Person</MyTag>
-                <MyTag className="tags">Agent</MyTag>
+              <div className={"tts"}>
+                <Button block onClick={this.set_graph}>
+                  检测
+                </Button>
               </div>
-              <Button className={"graphButtons"} onClick={this.set_graph}>
-                <Icon component={icons["run"]} />
-              </Button>
-              <Button className={"graphButtons"}>
-                <Icon component={icons["clean"]} />
-              </Button>
             </div>
-            <div className="graphContainer">
-              {this.state.type === "pattern" && (
-                <PatternGraph
-                  key={1}
-                  loadingGraph={this.state.loadingGraph}
-                  data={this.state.data}
-                  next_pattern={this.next_pattern.bind(this)}
-                  prev_pattern={this.prev_pattern.bind(this)}
-                  title={this.state.title}
-                  text_res={JSON.stringify(this.state.props_data, null, 2)}
-                  table={this.state.table}
-                  cost={this.state.cost}
-                  total={this.state.total}
-                />
-              )}
 
-              {this.state.type === "result" && (
-                <D3Graph
-                  key={1}
-                  loadingGraph={this.state.loadingGraph}
-                  data={this.state.data}
-                />
-              )}
+            <div className="graphContainer">
+              {/*<h3 style={{margin: '2%'}}></h3>*/}
+              <Row style={{ margin: "2%" }}>
+                <Col span={12}>
+                  <h3>检测结果：</h3>
+                </Col>
+                {/*<Col span={12} />*/}
+                <Col span={6} offset={6}>
+                  <Button onClick={this.show_all}>显示全部</Button>
+                </Col>
+              </Row>
+
+              <TableView />
             </div>
           </div>
         </div>

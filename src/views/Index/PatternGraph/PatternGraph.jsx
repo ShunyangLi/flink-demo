@@ -46,11 +46,11 @@ const LayoutSelector = props => {
     <div style={{ position: "absolute", top: 10, left: 10 }}>
       <Select style={{ width: "120px" }} value={value} onChange={onChange}>
         {layouts.map(item => {
-          const { name, disabled } = item;
+          const { name, disabled, desc } = item;
           const iconComponent = iconMap[name] || <CustomerServiceOutlined />;
           return (
             <SelectOption key={name} value={name} disabled={disabled}>
-              {iconComponent} &nbsp;{name}
+              {iconComponent} &nbsp;{desc}
             </SelectOption>
           );
         })}
@@ -98,32 +98,6 @@ class PatternGraph extends Component {
     let { data } = this.props;
 
     const { nodes, edges, legendOptions } = data;
-    // tool bar
-    const renderToolbar = (renderProps, _state) => {
-      const { toolbarCfg } = renderProps;
-      const tooltip = {
-        fullscreen: "fullscreen",
-        zoomOut: "zoomOut",
-        zoomIn: "zoomIn"
-      };
-
-      // to filter the necessary toolbars
-      let customToolbarCfg = toolbarCfg.filter(item => {
-        return (
-          item.id === "fullscreen" ||
-          item.id === "zoomOut" ||
-          item.id === "zoomIn"
-        );
-      });
-
-      customToolbarCfg = customToolbarCfg.map(item => {
-        return {
-          ...item,
-          name: tooltip[item.id]
-        };
-      });
-      return [...customToolbarCfg];
-    };
 
     const handleLegend = (checked, options, LegendProps) => {
       const { apis } = LegendProps;
@@ -210,7 +184,9 @@ class PatternGraph extends Component {
                     }}
                   />
                   <Legend options={legendOptions} onChange={handleLegend} />
-                  <Toolbar direction="vertical" render={renderToolbar} />
+                  <Toolbar
+                    style={{ position: "absolute", bottom: 28, left: 28 }}
+                  />
                 </Graphin>
               )}
               {this.props.loadingGraph && (

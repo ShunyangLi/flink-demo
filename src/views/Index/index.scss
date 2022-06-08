@@ -43,13 +43,13 @@
 }
 
 .p1 {
-  background-image: url("../../assets/images/1.png");
+  background-image: url("../../assets/images/1.svg");
 }
 .p2 {
-  background-image: url("../../assets/images/2.png");
+  background-image: url("../../assets/images/2.svg");
 }
 .p3 {
-  background-image: url("../../assets/images/3.png");
+  background-image: url("../../assets/images/3.svg");
 }
 
 .cc-selector-2 input:active + .drinkcard-cc,
@@ -84,13 +84,13 @@
 /*}*/
 
 /* Extras */
-a:visited {
-  color: #888;
-}
-a {
-  color: #444;
-  text-decoration: none;
-}
+//a:visited {
+//  color: #888;
+//}
+//a {
+//  color: #444;
+//  text-decoration: none;
+//}
 p {
   margin-bottom: 0.3em;
 }
@@ -112,4 +112,28 @@ p {
 .rs {
   margin-left: 5%;
   margin-top: 5%;
+}
+
+.pps {
+  //font-size: 1px;
+  //line-height: 2px;
+  //font-weight: bold;
+  color: black;
+  padding: 2px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px black;
+}
+
+.tts {
+  //font-size: 1px;
+  //line-height: 2px;
+  //font-weight: bold;
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-bottom: 2%;
+  color: black;
+  padding: 2px;
+  border-radius: 10px;
+  //box-shadow: 0 0 0 1px black;
+  width: 79.5%;
 }

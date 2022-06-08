@@ -20,18 +20,20 @@ const AppHeader = props => {
         </Col>
 
         {/* right part */}
-        <Col span={20} />
-        <Col span={2}>
-          <div className="right">
-            <div className="mr15" style={{ marginRight: "0.5em" }}>
-              <Badge dot={true} offset={[-2, 0]}>
-                <a href="http://www.google.com/" style={{ color: "#000" }}>
-                  <Icon type="bell" />
-                </a>
-              </Badge>
-            </div>
-          </div>
+        <Col style={{ marginLeft: "38%" }}>
+          <h2>金融风控系统展示</h2>
         </Col>
+        {/*<Col span={2}>*/}
+        {/*  <div className="right">*/}
+        {/*    <div className="mr15" style={{ marginRight: "0.5em" }}>*/}
+        {/*      <Badge dot={true} offset={[-2, 0]}>*/}
+        {/*        <a href="http://www.google.com/" style={{ color: "#000" }}>*/}
+        {/*          <Icon type="bell" />*/}
+        {/*        </a>*/}
+        {/*      </Badge>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</Col>*/}
       </Row>
     </Header>
   );

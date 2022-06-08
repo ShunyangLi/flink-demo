@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const CustomBreadcrumb = props => (
   <Breadcrumb style={{ marginBottom: 16 }}>
     <Breadcrumb.Item>
-      <Link to="/index">index</Link>
+      <Link to="/index">主页</Link>
     </Breadcrumb.Item>
     {props.arr &&
       props.arr.map(res => {
