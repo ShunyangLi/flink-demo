@@ -14,11 +14,11 @@ const menu = [
     title: "配置",
     icon: "config"
   },
-  {
-    key: "/server",
-    title: "服务器",
-    icon: "server"
-  },
+  // {
+  //   key: "/server",
+  //   title: "服务器",
+  //   icon: "server"
+  // },
   {
     key: "/database",
     title: "数据库",

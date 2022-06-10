@@ -141,34 +141,6 @@ class D3Graph extends Component {
       data = this.state.data;
     }
 
-    // tool bar
-    // const renderToolbar = (renderProps, _state) => {
-    //   const { toolbarCfg } = renderProps;
-    //   const tooltip = {
-    //     fullscreen: "fullscreen",
-    //     zoomOut: "zoomOut",
-    //     zoomIn: "zoomIn"
-    //   };
-    //
-    //   // to filter the necessary toolbars
-    //   let customToolbarCfg = toolbarCfg.filter(item => {
-    //     return (
-    //       item.id === "fullscreen" ||
-    //       item.id === "zoomOut" ||
-    //       item.id === "zoomIn"
-    //     );
-    //   });
-    //
-    //   customToolbarCfg = customToolbarCfg.map(item => {
-    //     console.log(item);
-    //     return {
-    //       ...item,
-    //       name: tooltip[item.id]
-    //     };
-    //   });
-    //   return [...customToolbarCfg];
-    // };
-
     const handleLegend = (checked, options, LegendProps) => {
       const { apis } = LegendProps;
       // Highlight 逻辑
@@ -190,107 +162,31 @@ class D3Graph extends Component {
 
     return (
       <div>
-        <PageHeader ghost={false} title="Graph Data" key={1} />
+        {/*<PageHeader ghost={false} title="图数据展示" key={1} />*/}
         <div>
-          {/* header part */}
-          <Tabs tabPosition={"left"} defaultActiveKey="1">
-            <TabPane
-              tab={
-                <span>
-                  <img
-                    alt={"attribute"}
-                    src={graph}
-                    style={{ height: "20px", width: "20px" }}
-                  />
-                </span>
-              }
-              key="1"
-            >
-              {!this.props.loadingGraph && (
-                <Graphin
-                  data={{ nodes, edges }}
-                  options={{
-                    autoPolyEdge: true
-                  }}
-                  layout={this.state.layout}
-                  style={{ height: "300px" }}
-                >
-                  <LayoutSelector
-                    value={this.state.layout.name}
-                    onChange={value => {
-                      this.setState({
-                        layout: {
-                          name: value,
-                          options: this.state.layout.options
-                        }
-                      });
-                    }}
-                  />
-                  <Legend options={legendOptions} onChange={handleLegend} />
-                  {/*<Toolbar direction="vertical" render={renderToolbar} />*/}
-                  <Toolbar
-                    style={{ position: "absolute", bottom: 28, left: 28 }}
-                  />
-                </Graphin>
-              )}
-              {this.props.loadingGraph && (
-                <div>
-                  <Spin size={"large"} />
-                </div>
-              )}
-            </TabPane>
-
-            <TabPane
-              tab={
-                <span>
-                  <img
-                    alt={"attribute"}
-                    src={code}
-                    style={{ height: "20px", width: "20px" }}
-                  />
-                </span>
-              }
-              key="2"
-            >
-              Code part
-            </TabPane>
-
-            <TabPane
-              tab={
-                <span>
-                  <img
-                    alt={"attribute"}
-                    src={text}
-                    style={{ height: "20px", width: "20px" }}
-                  />
-                </span>
-              }
-              key="3"
-            >
-              <Table
-                bordered
-                components={this.components}
-                columns={this.state.columns}
-                dataSource={db_data}
-                style={{ marginRight: "10px" }}
-              />
-            </TabPane>
-
-            <TabPane
-              tab={
-                <span>
-                  <img
-                    alt={"attribute"}
-                    src={server}
-                    style={{ height: "20px", width: "20px" }}
-                  />
-                </span>
-              }
-              key="4"
-            >
-              <Server />
-            </TabPane>
-          </Tabs>
+          <Graphin
+            data={{ nodes, edges }}
+            options={{
+              autoPolyEdge: true
+            }}
+            layout={this.state.layout}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <LayoutSelector
+              value={this.state.layout.name}
+              onChange={value => {
+                this.setState({
+                  layout: {
+                    name: value,
+                    options: this.state.layout.options
+                  }
+                });
+              }}
+            />
+            <Legend options={legendOptions} onChange={handleLegend} />
+            {/*<Toolbar direction="vertical" render={renderToolbar} />*/}
+            <Toolbar style={{ position: "absolute", bottom: 28, left: 28 }} />
+          </Graphin>
         </div>
       </div>
     );

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "@/style/view-style/index.scss";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
 import TableView from "./TableView";
-import { Button, Form, message, Radio, Row, Col } from "antd";
+import { Button, Form, message, Radio } from "antd";
+import ls from "../../assets/images/4.svg";
 import axios from "@/api";
 import { API } from "@/api/config";
 import "./index.scss";
@@ -28,7 +29,8 @@ class Index extends Component {
       },
       cost: "",
       total: 0,
-      pattern: 1
+      pattern: 1,
+      loading: false
     };
   }
 
@@ -42,33 +44,36 @@ class Index extends Component {
   set_graph = () => {
     // when runing the result we set loading
     this.setState({
-      loadingGraph: !this.state.loadingGraph
+      loading: true
     });
 
-    axios
-      .get(`${API}/query`, {
-        params: {
-          queryJson: {
-            query: this.state.code.replaceAll("\n", " ")
-          }
-        }
-      })
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          props_data: res.data,
-          total: res.data.results.length,
-          loadingGraph: !this.state.loadingGraph,
-          cost: res.data.runTime + "ms"
-        });
+    message.success("正在查询");
 
-        this.extract_data(res.data);
-        this.extract_table(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-        message.error("网络错误");
-      });
+    setTimeout(() => {
+      axios
+        .get(`${API}/query`, {})
+        .then(res => {
+          console.log(res.data);
+          this.setState({
+            props_data: res.data,
+            total: res.data.results.length,
+            loadingGraph: !this.state.loadingGraph,
+            cost: res.data.runTime + "ms"
+          });
+
+          this.extract_data(res.data);
+          this.extract_table(res.data);
+
+          message.success("数据查询成功");
+          this.setState({
+            loading: false
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          message.error("网络错误");
+        });
+    }, 1000);
   };
 
   // to extract the nodes and edges from data
@@ -140,9 +145,9 @@ class Index extends Component {
                 })
               ];
             let ic = "";
-            if (["Person", "user"].indexOf(tl.toString()) >= 0) {
+            if (["用户", "client"].indexOf(tl.toString()) >= 0) {
               ic = "switch user";
-            } else if (["Company", "money"].indexOf(tl.toString()) >= 0) {
+            } else if (["商铺", "Merchant"].indexOf(tl.toString()) >= 0) {
               ic = "bank-fill";
             }
             nodes.push({
@@ -354,6 +359,7 @@ class Index extends Component {
                 <Radio.Group
                   value={this.state.pattern}
                   onChange={this.change_pattern}
+                  style={{ marginLeft: "3%" }}
                 >
                   <Radio value={1} className={"pps"}>
                     <label className="drinkcard-cc p1" htmlFor="p1" />
@@ -367,9 +373,20 @@ class Index extends Component {
                     <label className="drinkcard-cc p3" htmlFor="p1" />
                   </Radio>
                 </Radio.Group>
+
+                <img
+                  src={ls}
+                  alt={"label"}
+                  style={{ height: "80px", marginTop: "2%", marginLeft: "25%" }}
+                />
               </div>
               <div className={"tts"}>
-                <Button block onClick={this.set_graph}>
+                <Button
+                  type="primary"
+                  block
+                  onClick={this.set_graph}
+                  loading={this.state.loading}
+                >
                   检测
                 </Button>
               </div>
@@ -377,17 +394,7 @@ class Index extends Component {
 
             <div className="graphContainer">
               {/*<h3 style={{margin: '2%'}}></h3>*/}
-              <Row style={{ margin: "2%" }}>
-                <Col span={12}>
-                  <h3>检测结果：</h3>
-                </Col>
-                {/*<Col span={12} />*/}
-                <Col span={6} offset={6}>
-                  <Button onClick={this.show_all}>显示全部</Button>
-                </Col>
-              </Row>
-
-              <TableView />
+              <TableView data={this.state.data} />
             </div>
           </div>
         </div>

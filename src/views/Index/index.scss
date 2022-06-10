@@ -52,6 +52,10 @@
   background-image: url("../../assets/images/3.svg");
 }
 
+.p4 {
+  background-image: url("../../assets/images/4.svg");
+}
+
 .cc-selector-2 input:active + .drinkcard-cc,
 .cc-selector input:active + .drinkcard-cc {
   opacity: 0.9;
@@ -135,5 +139,5 @@ p {
   padding: 2px;
   border-radius: 10px;
   //box-shadow: 0 0 0 1px black;
-  width: 79.5%;
+  width: 87%;
 }

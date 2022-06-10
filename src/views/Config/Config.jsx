@@ -31,88 +31,53 @@ class Config extends Component {
     //Table
     const dataSource = [
       {
-        workDir: "/a/b/c/xx/u",
-        user: "小明",
-        group: "a",
-        workers: "小绿、小花、小红",
+        workDir: "localhost",
+        user: "管理员",
+        group: "管理员",
+        workers: "4",
         machines: "0001",
         hostFile: "C:\\mycode\\min.dec",
-        state: "<button>启用</button>",
+        state: "活跃",
         key: "1"
-      },
-      {
-        workDir: "/a/b/c/xx/u",
-        user: "小明",
-        group: "w",
-        workers: 12,
-        machines: "0001",
-        hostFile: "C:\\mycode\\min.dec",
-        state: "Y",
-        key: "2"
-      },
-      {
-        workDir: "/a/b/c/xx/u",
-        user: "小明",
-        group: "n",
-        workers: 12,
-        machines: "0001",
-        hostFile: "C:\\mycode\\min.dec",
-        state: "Y",
-        key: "3"
       }
     ];
     //定义表头
     const columns = [
       {
-        title: "workdir", //列名称
+        title: "服务器", //列名称
         dataIndex: "workDir", //数据源的字段名
         key: "workDir"
       },
       {
-        title: "user",
+        title: "用户",
         dataIndex: "user",
         key: "user"
       },
       {
-        title: "group",
+        title: "组",
         dataIndex: "group",
         key: "group"
       },
       {
-        title: "workers",
+        title: "线程数量",
         dataIndex: "workers",
         key: "workers"
       },
       {
-        title: "machines",
+        title: "服务器编号",
         dataIndex: "machines",
         key: "machines"
       },
       {
-        title: "state",
+        title: "状态",
         dataIndex: "state",
         key: "state",
         render: state => (
           <span>
             <Tag color={"volcano"} key={"state"}>
-              {"禁用"}
+              {"活跃"}
             </Tag>
             {/*    启用 color 换为blue*/}
-          </span>
-        )
-      },
-      {
-        title: "Action",
-        key: "action",
-        render: (text, record) => (
-          <span>
-            <Button type="primary" icon="edit" size="small">
-              Activate
-            </Button>
-            <Divider type="vertical" />
-            <Button type="danger" icon="delete" size="small">
-              Delete
-            </Button>
           </span>
         )
       }
@@ -135,11 +100,11 @@ class Config extends Component {
 
     return (
       <div>
-        <CustomBreadcrumb arr={["cofiguration"]} />
+        <CustomBreadcrumb arr={["配置"]} />
         <div style={{ margin: "0.5em" }}>
-          <Button type="primary" onClick={this.showModal}>
-            New
-          </Button>
+          {/*<Button type="primary" onClick={this.showModal}>*/}
+          {/*  New*/}
+          {/*</Button>*/}
           <Modal
             visible={this.state.visible}
             // loading={this.state.loading}
