@@ -1,35 +1,9 @@
 import React, { Component } from "react";
-import { Table, Button, Modal, Col, Row } from "antd";
+import { Table, Button, Modal, Col, Row, message } from "antd";
 // import reducer from "../../../store/reducer";
 import D3Graph from "../Graph";
-
-let data = [
-  {
-    rank: "1",
-    account: "C3156307206",
-    percent: "3"
-  },
-  {
-    rank: "2",
-    account: "C4712130154",
-    percent: "2"
-  },
-  {
-    rank: "3",
-    account: "C2251403439",
-    percent: "1"
-  },
-  {
-    rank: "4",
-    account: "C6199774840",
-    percent: "1"
-  },
-  {
-    rank: "5",
-    account: "C5296316207",
-    percent: "1"
-  }
-];
+import axios from "@/api";
+import { API } from "@/api/config";
 
 class TableView extends Component {
   constructor(props) {
@@ -58,16 +32,35 @@ class TableView extends Component {
           align: "center"
         }
       ],
-      visible: false
+      visible: false,
+      data: {
+        nodes: [],
+        edges: [],
+        legendOptions: []
+      },
+      colors: []
     };
   }
 
   show_graph_with_id = record => {
     let { account } = record;
-
-    this.setState({
-      visible: true
-    });
+    message.success("正在查询子图");
+    axios
+      .get(`${API}/query/${this.props.pattern}/${account}`, {})
+      .then(res => {
+        message.success("数据查询成功");
+        this.setState({
+          colors: []
+        });
+        this.extract_data(res.data);
+        this.setState({
+          visible: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        message.error("网络错误");
+      });
   };
 
   handleOk = e => {
@@ -78,8 +71,149 @@ class TableView extends Component {
   };
 
   show_all = () => {
+    axios
+      .get(`${API}/patter/${this.props.pattern}`, {})
+      .then(res => {
+        this.setState({
+          colors: []
+        });
+        this.extract_data(res.data);
+        message.success("数据查询成功");
+        this.setState({
+          visible: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        message.error("网络错误");
+      });
+  };
+
+  // to extract the nodes and edges from data
+  extract_data = data => {
+    if (data === undefined) return;
+    const labels = data.query.labels;
+    let colors = this.state.colors;
+    let legends = [];
+
+    labels.forEach(label => {
+      // set colors
+      let color = this.generateColor();
+      if (colors[label] === undefined) colors[label] = color;
+      if (
+        legends.filter(l => {
+          return l.label === label.toString();
+        }).length === 0
+      ) {
+        legends.push({
+          label: label.toString(),
+          value: label.toString(),
+          color: color
+        });
+      }
+    });
+
+    // set legends color
     this.setState({
-      visible: true
+      data: {
+        legendOptions: legends
+      }
+    });
+
+    // extract nodes
+    this.extract_node_edges(data);
+  };
+
+  // generate a random color, used for the label
+  generateColor = () => {
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  };
+
+  // extract the result by using next_index
+  extract_node_edges = data => {
+    // console.log("index", next_index);
+    const query = data.query;
+    // get the labels and edges data
+    const { labels, edges } = query;
+    let colors = this.state.colors;
+    // const result = data.results[next_index];
+    let nodes = [];
+    let data_edges = [];
+    let results = data.results;
+
+    results.forEach(result => {
+      edges.forEach(edge => {
+        const source = result[edge.src].toString();
+        const target = result[edge.dest].toString();
+        const label = edge.label.toString();
+
+        // add the nodes
+        let temp_nodes = [source, target];
+        temp_nodes.forEach(node_id => {
+          if (nodes.filter(node => node.id === node_id).length === 0) {
+            let tl =
+              labels[
+                result.findIndex(r => {
+                  return r.toString() === node_id;
+                })
+              ];
+            let ic = "";
+            if (["用户"].indexOf(tl.toString()) >= 0) {
+              ic = "switch user";
+            } else if (["商铺"].indexOf(tl.toString()) >= 0) {
+              ic = "shop";
+            } else if (["银行"].indexOf(tl.toString()) >= 0) {
+              ic = "bank-fill";
+            }
+
+            nodes.push({
+              comboId: undefined,
+              data: {
+                id: node_id,
+                label: node_id,
+                properties: [],
+                type: tl
+              },
+              id: node_id,
+              label: node_id,
+              shape: "CircleNode",
+              style: {
+                fontFamily: "graphin",
+                icon: ic,
+                nodeSize: 24,
+                primaryColor: colors[tl]
+              }
+            });
+          }
+        });
+
+        const temp = data_edges.filter(e => {
+          return (
+            e.label === label && e.source === source && e.target === target
+          );
+        });
+        if (temp.length === 0) {
+          data_edges.push({
+            data: {
+              label: label,
+              properties: [],
+              source: source,
+              target: target
+            },
+            label: label,
+            source: source,
+            target: target
+          });
+        }
+      });
+    });
+    // console.log(nodes, data_edges);
+    this.setState({
+      data: {
+        nodes: nodes,
+        edges: data_edges,
+        legendOptions: this.state.data.legendOptions
+      }
     });
   };
 
@@ -93,11 +227,12 @@ class TableView extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           width={700}
+          height={700}
           onCancel={this.handleOk}
           okText="确认"
           cancelText="取消"
         >
-          <D3Graph key={1} data={this.props.data} />
+          <D3Graph key={1} data={this.state.data} />
         </Modal>
         <Row style={{ margin: "2%" }}>
           <Col span={12}>
@@ -112,7 +247,7 @@ class TableView extends Component {
           bordered
           components={this.components}
           columns={this.state.columns}
-          dataSource={data}
+          dataSource={this.props.tdata}
           // pagination={false}
           style={{ marginRight: "10px" }}
         />

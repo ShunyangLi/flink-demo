@@ -1,7 +1,7 @@
 import json
 # from textwrap import indent
 
-filename = './data/2.txt'
+filename = './tree.txt'
 
 
 data = []
@@ -13,10 +13,10 @@ with open(filename, 'r') as f:
         # print(line.split(','))
         # break
 
-edges = data[10000:]
+edges = data
 
 
-f = open('./subgraphs/2.json', 'r')
+f = open('./subgraphs/1.json', 'r')
 jfile = json.load(f)
 
 jfile["results"] = edges
@@ -40,7 +40,7 @@ jfile["nodes"] = nodes
 
 # print(jfile)
 
-f = open('./subgraphs/p2.json', 'w')
+f = open('./subgraphs/p1.json', 'w')
 
 f.write(json.dumps(jfile,indent=4))
 f.close()

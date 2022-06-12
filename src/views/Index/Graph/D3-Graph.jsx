@@ -136,7 +136,8 @@ class D3Graph extends Component {
     console.log(data);
 
     const { nodes, edges, legendOptions } = data;
-    console.log(data);
+    // console.log(legendOptions);
+    // console.log(data);
     if (data.nodes.length === 0) {
       data = this.state.data;
     }
