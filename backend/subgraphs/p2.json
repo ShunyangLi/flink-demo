@@ -1,18 +1,18 @@
 {
     "query": {
         "edges": [
-            {"dest":1,"label":"汇款","src":0},
-            {"dest":2,"label":"汇款","src":1},
-            {"dest":3,"label":"汇款","src":2},
-            {"dest":4,"label":"汇款","src":3},
-            {"dest":0,"label":"汇款","src":4}
+            {"dest":1,"label":"Transfer","src":0},
+            {"dest":2,"label":"Transfer","src":1},
+            {"dest":3,"label":"Transfer","src":2},
+            {"dest":4,"label":"Transfer","src":3},
+            {"dest":0,"label":"Transfer","src":4}
           ],
           "labels": [
-            "用户",
-            "商铺", 
-            "用户", 
-            "用户", 
-            "用户"
+            "Bank",
+            "Merchant",
+            "User",
+            "User",
+            "User"
           ]
     },
     "results": [

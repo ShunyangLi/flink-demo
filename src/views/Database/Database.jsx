@@ -52,7 +52,7 @@ class Database extends Component {
             style={{ marginBottom: "10px" }}
             onClick={this.show_add_database.bind(this)}
           >
-            添加数据
+            Add Graph
           </Button>
           {/* all the database name */}
           <DBname />

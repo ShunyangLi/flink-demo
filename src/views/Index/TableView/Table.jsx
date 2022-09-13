@@ -11,13 +11,13 @@ class TableView extends Component {
     this.state = {
       columns: [
         {
-          title: "排名",
+          title: "Rank",
           dataIndex: "rank",
           key: "rank",
           align: "center"
         },
         {
-          title: "嫌疑账户",
+          title: "Account",
           dataIndex: "account",
           key: "account",
           align: "center",
@@ -26,7 +26,7 @@ class TableView extends Component {
           )
         },
         {
-          title: "嫌疑程度",
+          title: "Suspicion level",
           dataIndex: "percent",
           key: "percent",
           align: "center"
@@ -44,11 +44,11 @@ class TableView extends Component {
 
   show_graph_with_id = record => {
     let { account } = record;
-    message.success("正在查询子图");
+    message.success("Querying subgraphs");
     axios
       .get(`${API}/query/${this.props.pattern}/${account}`, {})
       .then(res => {
-        message.success("数据查询成功");
+        message.success("Data query success");
         this.setState({
           colors: []
         });
@@ -59,7 +59,7 @@ class TableView extends Component {
       })
       .catch(err => {
         console.log(err);
-        message.error("网络错误");
+        message.error("Network Error");
       });
   };
 
@@ -78,14 +78,14 @@ class TableView extends Component {
           colors: []
         });
         this.extract_data(res.data);
-        message.success("数据查询成功");
+        message.success("Data query success");
         this.setState({
           visible: true
         });
       })
       .catch(err => {
         console.log(err);
-        message.error("网络错误");
+        message.error("Network Error");
       });
   };
 
@@ -158,11 +158,11 @@ class TableView extends Component {
                 })
               ];
             let ic = "";
-            if (["用户"].indexOf(tl.toString()) >= 0) {
+            if (["User"].indexOf(tl.toString()) >= 0) {
               ic = "switch user";
-            } else if (["商铺"].indexOf(tl.toString()) >= 0) {
+            } else if (["Merchant"].indexOf(tl.toString()) >= 0) {
               ic = "shop";
-            } else if (["银行"].indexOf(tl.toString()) >= 0) {
+            } else if (["Bank"].indexOf(tl.toString()) >= 0) {
               ic = "bank-fill";
             }
 
@@ -223,24 +223,24 @@ class TableView extends Component {
     return (
       <div>
         <Modal
-          title="嫌疑账户显示"
+          title="Suspected accounts show"
           visible={this.state.visible}
           onOk={this.handleOk}
           width={700}
           height={700}
           onCancel={this.handleOk}
-          okText="确认"
-          cancelText="取消"
+          okText="Confirm"
+          cancelText="Cancel"
         >
           <D3Graph key={1} data={this.state.data} />
         </Modal>
         <Row style={{ margin: "2%" }}>
           <Col span={12}>
-            <h3>检测结果：</h3>
+            <h3>Result: </h3>
           </Col>
           {/*<Col span={12} />*/}
           <Col span={6} offset={6}>
-            <Button onClick={this.show_all}>显示全部</Button>
+            <Button onClick={this.show_all}>All Result</Button>
           </Col>
         </Row>
         <Table

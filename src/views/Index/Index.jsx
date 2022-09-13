@@ -3,7 +3,7 @@ import "@/style/view-style/index.scss";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
 import TableView from "./TableView";
 import { Button, Form, message, Radio } from "antd";
-import ls from "../../assets/images/4.svg";
+import ls from "../../assets/images/5.svg";
 import axios from "@/api";
 import { API } from "@/api/config";
 import "./index.scss";
@@ -41,7 +41,7 @@ class Index extends Component {
       loading: true
     });
 
-    message.success("正在查询");
+    message.success("Querying");
 
     setTimeout(() => {
       axios
@@ -52,14 +52,14 @@ class Index extends Component {
           this.setState({
             tdata: res.data
           });
-          message.success("数据查询成功");
+          message.success("QuerycSuccessful");
           this.setState({
             loading: false
           });
         })
         .catch(err => {
           console.log(err);
-          message.error("网络错误");
+          message.error("Network Error");
         });
     }, 500);
   };
@@ -74,7 +74,7 @@ class Index extends Component {
     return (
       <div className="content">
         <div>
-          <CustomBreadcrumb arr={["数据库"]} />
+          <CustomBreadcrumb arr={["Database"]} />
         </div>
 
         {/* tag and graph part */}
@@ -115,7 +115,7 @@ class Index extends Component {
                   onClick={this.set_graph}
                   loading={this.state.loading}
                 >
-                  检测
+                  Detect
                 </Button>
               </div>
             </div>

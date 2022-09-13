@@ -68,13 +68,13 @@ class Import extends Component {
 
     return (
       <div>
-        <CustomBreadcrumb arr={["导入数据"]} />
+        <CustomBreadcrumb arr={["Import Data"]} />
         <div className={"uploadArea"}>
           <div>
             <Select
               showSearch
               style={{ width: 200 }}
-              placeholder="选择导入文件类型"
+              placeholder="Select Import Data Type"
               optionFilterProp="csv"
               onChange={this.onChange}
               filterOption={(input, option) =>
@@ -89,7 +89,7 @@ class Import extends Component {
             {(this.state.search === "csv" || this.state.search === "hdfs") && (
               <div>
                 <Upload {...props}>
-                  <Button>选择文件</Button>
+                  <Button>Select Files</Button>
                 </Upload>
                 <Button
                   type="primary"
@@ -98,7 +98,7 @@ class Import extends Component {
                   loading={uploading}
                   style={{ marginTop: 16 }}
                 >
-                  {uploading ? "正在上传" : "开始上传"}
+                  {uploading ? "Uploading" : "Upload"}
                 </Button>
               </div>
             )}
@@ -110,7 +110,7 @@ class Import extends Component {
                   addonAfter=".com"
                   defaultValue="mysite"
                 />
-                <Button>开始上传</Button>
+                <Button>Upload</Button>
               </div>
             )}
           </div>

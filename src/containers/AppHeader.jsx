@@ -21,7 +21,7 @@ const AppHeader = props => {
 
         {/* right part */}
         <Col style={{ marginLeft: "38%" }}>
-          <h2>金融风控系统展示</h2>
+          <h2>Financial Risk Control System</h2>
         </Col>
         {/*<Col span={2}>*/}
         {/*  <div className="right">*/}

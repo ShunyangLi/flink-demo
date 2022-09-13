@@ -1,17 +1,17 @@
 const menu = [
   {
     key: "/index",
-    title: "查询",
+    title: "Query",
     icon: "query"
   },
   {
     key: "/import",
-    title: "导入",
+    title: "Import",
     icon: "importd"
   },
   {
     key: "/config",
-    title: "配置",
+    title: "Config",
     icon: "config"
   },
   // {
@@ -21,7 +21,7 @@ const menu = [
   // },
   {
     key: "/database",
-    title: "数据库",
+    title: "Database",
     icon: "db"
   }
   // {

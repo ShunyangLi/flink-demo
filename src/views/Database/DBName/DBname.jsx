@@ -4,8 +4,8 @@ import { Button, Divider, Table, message } from "antd";
 const data = [
   {
     name: "PaySim",
-    direction: "有向图",
-    label: "整数"
+    direction: "Directed Graph",
+    label: "Int"
   }
 ];
 
@@ -15,25 +15,25 @@ export default class DBname extends Component {
     this.state = {
       columns: [
         {
-          title: "名称",
+          title: "Name",
           dataIndex: "name",
           key: "name",
           align: "center"
         },
         {
-          title: "图类型",
+          title: "Graph Type",
           dataIndex: "direction",
           key: "direction",
           align: "center"
         },
         {
-          title: "标签",
+          title: "Label",
           dataIndex: "label",
           key: "label",
           align: "center"
         },
         {
-          title: "操作",
+          title: "Action",
           key: "action",
           align: "center",
           render: () => (
@@ -44,12 +44,12 @@ export default class DBname extends Component {
                 icon="plus"
                 onClick={this.load_graph.bind(this)}
               >
-                加载
+                Load
               </Button>
               <Divider type="vertical" />
               {/* need to pass a function */}
               <Button type="danger" icon="delete">
-                删除
+                Delete
               </Button>
             </span>
           )
@@ -59,7 +59,7 @@ export default class DBname extends Component {
   }
 
   load_graph = () => {
-    message.success("加载成功");
+    message.success("Load Success");
   };
 
   render() {
