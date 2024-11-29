@@ -40,3 +40,6 @@ MATCH(p1:Person)-[:Knows]->(p2:Person)<-[:PostHasCreator]-(m:Post) 2 RETURN *;
 ```cypher
 MATCH (p1:Person)-[:Knows]->(p2:Person)-[w:WorkAt]->(o:Company)- [:OrganisationIsLocatedIn]->(c:Country) RETURN *;
 ```
+
+# Template used
+The template is based on: https://github.com/ltadpoles/react-admin
