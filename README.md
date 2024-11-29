@@ -1,11 +1,9 @@
+![](./fig/1.png)
+
 # Result data format
 [result format](https://drive.google.com/file/d/1PSfjAgjhh6NhDvstO_L4YWjaEBOnVyWG/view)
 
-![](./fig/1.png)
-
-<iframe width="1280" height="720" src="https://www.youtube.com/embed/UPVi3MFpZuY" title="Flink demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-# Cypher
+# Cypher Queries
 
 ```cypher
 MATCH(p1:Person)-[r1:Knows]->(p2:Person)-[r2:PersonIsLocatedIn]-> (ct1:City), (p1:Person)-[:WorkAt]->(cp1:Company)-[:OrganisationIsLocatedIn]-> (co:Country), (p1:Person)-[:StudyAt]->(u1:University)-[:OrganisationIsLocatedIn]-> (ct2:City) RETURN *
