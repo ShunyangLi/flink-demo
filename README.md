@@ -3,6 +3,8 @@
 
 ![](./fig/1.png)
 
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/UPVi3MFpZuY" title="Flink demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # Cypher
 
 ```cypher
